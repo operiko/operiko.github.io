@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operiko — Something is coming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #1a56db;
+    --teal: #0ea5e9;
+    --green: #22c55e;
+    --dark: #0b0f14;
+    --dark2: #111820;
+    --text: #dde4ed;
+    --muted: #506070;
+    --muted2: #8899aa;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(130px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 700px; height: 700px; background: var(--blue); opacity: 0.12; top: -280px; left: -160px; animation: d1 20s ease-in-out infinite; }
+  .blob-2 { width: 550px; height: 550px; background: var(--green); opacity: 0.10; bottom: -200px; right: -120px; animation: d2 25s ease-in-out infinite; }
+  .blob-3 { width: 350px; height: 350px; background: var(--teal); opacity: 0.08; top: 35%; left: 38%; animation: d3 17s ease-in-out infinite; }
+
+  @keyframes d1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(70px,90px)} }
+  @keyframes d2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-90px,-60px)} }
+  @keyframes d3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(50px,-50px) scale(1.15)} }
+
+  section, nav, footer, .divider-bar { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(16px);
+    background: rgba(11,15,20,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    color: white;
+    text-decoration: none;
+  }
+  .nav-logo img { height: 30px; width: auto; }
+
+  .nav-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--teal);
+    border: 1px solid rgba(14,165,233,0.25);
+    background: rgba(14,165,233,0.07);
+    padding: 5px 12px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 48px 100px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    animation: fadeUp 0.9s ease both;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  .hero-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 44px;
+    animation: fadeUp 0.9s ease 0.1s both;
+    filter: drop-shadow(0 0 48px rgba(14,165,233,0.25));
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+    animation: fadeUp 0.9s ease 0.18s both;
+    max-width: 820px;
+  }
+
+  .hero h1 .g {
+    background: linear-gradient(120deg, var(--teal) 10%, var(--green) 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    color: var(--muted2);
+    max-width: 520px;
+    line-height: 1.75;
+    font-weight: 300;
+    animation: fadeUp 0.9s ease 0.28s both;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: fadeUp 1s ease 1s both;
+  }
+  .scroll-cue span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .scroll-cue::after {
+    content: '';
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: sp 2.2s ease-in-out infinite;
+  }
+  @keyframes sp { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+
+  /* DIVIDER BAR */
+  .divider-bar {
+    padding: 36px 48px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.015);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .pill:not(:last-child) { border-right: 1px solid var(--border); }
+  .pill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--green));
+    flex-shrink: 0;
+  }
+
+  /* VISION */
+  .vision {
+    padding: 120px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--teal); }
+
+  .vision-title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    margin-bottom: 24px;
+  }
+
+  .vision-body {
+    color: var(--muted2);
+    font-size: 1rem;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+  .vision-body p + p { margin-top: 16px; }
+
+  .vision-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--border);
+  }
+
+  .vision-card {
+    background: var(--dark2);
+    padding: 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    transition: background 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .vision-card:hover { background: rgba(14,165,233,0.04); }
+  .vision-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--teal), var(--green));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .vision-card:hover::before { opacity: 1; }
+
+  .vc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    margin-top: 4px;
+    flex-shrink: 0;
+    letter-spacing: 0.06em;
+  }
+  .vc-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .vc-desc { font-size: 0.85rem; color: var(--muted2); line-height: 1.65; font-weight: 300; }
+
+  /* STATEMENT */
+  .statement {
+    padding: 110px 48px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.012);
+  }
+  .statement-inner { max-width: 820px; margin: 0 auto; }
+  .statement p {
+    font-size: clamp(1.6rem, 3.5vw, 2.7rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    color: white;
+  }
+  .statement p em {
+    font-style: normal;
+    background: linear-gradient(120deg, var(--teal), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .statement-source {
+    margin-top: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* WHO */
+  .who { padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
+  .who-header { max-width: 560px; margin-bottom: 64px; }
+  .who-title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    margin-bottom: 16px;
+  }
+  .who-sub { color: var(--muted2); font-size: 1rem; line-height: 1.75; font-weight: 300; }
+
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .who-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 28px;
+    background: var(--card);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .who-card:hover { border-color: rgba(14,165,233,0.25); transform: translateY(-3px); }
+  .who-icon { font-size: 1.5rem; margin-bottom: 18px; display: block; }
+  .who-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .who-desc { font-size: 0.85rem; color: var(--muted2); line-height: 1.65; font-weight: 300; }
+
+  /* FOOTER */
+  footer {
+    padding: 28px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 80px;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.95rem; color: white; }
+  .footer-logo img { height: 22px; }
+  .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 24px; list-style: none; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: white; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="Gemini_Generated_Image_c3u4k1c3u4k1c3u4.png" alt="Operiko" onerror="this.style.display='none'">
+    Operiko
+  </a>
+  <span class="nav-tag">in development</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Something is being built</div>
+  <img src="Gemini_Generated_Image_c3u4k1c3u4k1c3u4.png" alt="Operiko" class="hero-logo" onerror="this.style.display='none'">
+  <h1>The platform that<br><span class="g">grows with you.</span></h1>
+  <p class="hero-sub">Operiko is an orchestration tool built for every scale — from your first side project to the infrastructure of a bank. We're building it now.</p>
+  <div class="scroll-cue"><span>scroll</span></div>
+</section>
+
+<div class="divider-bar reveal">
+  <div class="pill"><span class="pill-dot"></span>Open source first</div>
+  <div class="pill"><span class="pill-dot"></span>Any scale</div>
+  <div class="pill"><span class="pill-dot"></span>No vendor lock-in</div>
+  <div class="pill"><span class="pill-dot"></span>Developer native</div>
+</div>
+
+<section class="vision">
+  <div class="vision-left reveal">
+    <div class="section-label">The problem</div>
+    <h2 class="vision-title">Orchestration shouldn't be this hard.</h2>
+    <div class="vision-body">
+      <p>Every team eventually hits the same wall. The tools that got you started can't scale with you. The tools built for enterprise are overkill for everyone else. You end up stitching things together with duct tape and hope.</p>
+      <p>Operiko is being designed to close that gap — one platform that makes sense at every stage, without forcing you to migrate, re-architect, or rewire your entire stack when you grow.</p>
+    </div>
+  </div>
+  <div class="vision-right reveal">
+    <div class="vision-card">
+      <span class="vc-num">01</span>
+      <div class="vc-text">
+        <div class="vc-title">Scalable by default</div>
+        <p class="vc-desc">The same concepts that work for a solo dev should work for a 500-person engineering org. No rewrites when you outgrow yourself.</p>
+      </div>
+    </div>
+    <div class="vision-card">
+      <span class="vc-num">02</span>
+      <div class="vc-text">
+        <div class="vc-title">Open at the core</div>
+        <p class="vc-desc">Operiko starts as open source. Your platform isn't someone else's leverage over you.</p>
+      </div>
+    </div>
+    <div class="vision-card">
+      <span class="vc-num">03</span>
+      <div class="vc-text">
+        <div class="vc-title">Designed for real workflows</div>
+        <p class="vc-desc">Built by people who've lived the orchestration chaos. Not a tool designed in a vacuum.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="statement-inner reveal">
+    <p>Your platform should <em>evolve with you</em> — not become the thing your entire team works around.</p>
+    <div class="statement-source">— the idea behind Operiko</div>
+  </div>
+</section>
+
+<section class="who">
+  <div class="who-header reveal">
+    <div class="section-label">Who it's for</div>
+    <h2 class="who-title">Built for every stage of growth.</h2>
+    <p class="who-sub">Same tool, same mental model — whether you're shipping a side project or running critical banking infrastructure.</p>
+  </div>
+  <div class="who-grid reveal">
+    <div class="who-card">
+      <span class="who-icon">🌱</span>
+      <div class="who-name">Builders & Indie Devs</div>
+      <p class="who-desc">You want something that just works without a week of setup. Operiko won't get in your way when you're just trying to ship.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-icon">🚀</span>
+      <div class="who-name">Growing Teams</div>
+      <p class="who-desc">You've outgrown the simple stuff but you're not ready for the enterprise complexity tax. Operiko scales without demanding a rewrite.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-icon">🏦</span>
+      <div class="who-name">Enterprise & Finance</div>
+      <p class="who-desc">Compliance, auditability, and security aren't afterthoughts. Operiko is being designed with the serious end in mind from day one.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <img src="Gemini_Generated_Image_c3u4k1c3u4k1c3u4.png" alt="Operiko" onerror="this.style.display='none'">
+    Operiko
+  </div>
+  <span class="footer-copy">© 2025 Operiko · Building in public</span>
+  <ul class="footer-links">
+    <li><a href="#">GitHub</a></li>
+  </ul>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
